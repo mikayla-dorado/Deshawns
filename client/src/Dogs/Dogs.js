@@ -24,17 +24,18 @@ export const Dogs = () => {
     }, [dogs])
 
 
-return (
-    <div className="dog-list">
-        {dogs.map(dog => {
-            const dogId = dog.id
-            return (
-                <div>
-                {dog?.name}
-                </div>
-            )
-        })}
-       
-    </div>
-)
+    return (
+        <div className="dog-list">
+            {dogs.map(dog => {
+                const dogId = dog.id
+                return (
+                    <div className="details-btn"  onClick={() => { navigate(`dog-details/${dog.id}`) }}>
+                        {dog?.name}
+                           
+                        
+                    </div>
+                )
+            })}
+        </div>
+    )
 }
