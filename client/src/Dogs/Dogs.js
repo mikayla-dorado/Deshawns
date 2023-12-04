@@ -25,17 +25,22 @@ export const Dogs = () => {
 
 
     return (
-        <div className="dog-list">
+        <div className="dog-list-container">
+            <button className="add-btn"
+                onClick={() => { navigate(`adddog`, { state: { dogsArray } }) }}
+            >Add New Dog</button>
             {dogs.map(dog => {
                 const dogId = dog.id
                 return (
-                    <div className="details-btn"  onClick={() => { navigate(`dog-details/${dog.id}`) }}>
-                        {dog?.name}
-                           
-                        
+                    <div className="dog-list">
+                        <div className="dogs" key={dog.id}>
+                            <div className="details-btn" onClick={() => { navigate(`dog-details/${dog.id}`) }}>
+                                {dog?.name}
+                            </div>
+                        </div>
                     </div>
                 )
             })}
-        </div>
+        </div >
     )
 }

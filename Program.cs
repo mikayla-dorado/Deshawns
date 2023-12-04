@@ -103,6 +103,14 @@ app.MapGet("/api/dogs/{id}", (int id) =>
 });
 
 
+app.MapGet("/api/cities", () => 
+{
+     return cities.Select( c => new CityDTO
+    {
+        Id = c.Id,
+        Name = c.Name
+    });
+});
 
 
 

@@ -1,7 +1,17 @@
-.dog-list{
+.dog-list-container{
     border: solid black;
 }
 
 .details-btn {
     text-decoration: underline;
+}
+
+.add-dog-city{
+    margin-left: 5%;
+    margin-bottom: 5%;
+}
+
+.add-dog-input{
+    margin-left: 5%;
+    margin-bottom: 5%;
 }
