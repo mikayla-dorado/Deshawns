@@ -1,3 +1,7 @@
 .dog-list{
     border: solid black;
 }
+
+.details-btn {
+    text-decoration: underline;
+}
