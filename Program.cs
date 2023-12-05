@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using DeshawnsDogWalking.Models;
 using DeshawnsDogWalking.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 List<Dog> dogs = new List<Dog>
 {
@@ -104,18 +105,27 @@ app.MapGet("/api/dogs/{id}", (int id) =>
 
 
 
+//this is a POST request to create a new dog
 app.MapPost("/api/dogs", (Dog dog) =>
 {
-    dog.Id = dogs.Max(d => d.Id) + 1;
+    //this sets the Id of the incoming dog object
+    //it assigns a new identifier to the dog
+    //calculated as the maximum existing dog Id, + 1 to get the next dog Id
+    //dog.Id = dogs.Max(d => d.Id) + 1;
+    //this finds a city in the collection of cities,
+    //where the city's Id matches the cityId property of the incoming dog
     City city = cities.FirstOrDefault(c => c.Id == dog.CityId);
-
+    
+    //if the city variable is null, it will return a bad request result
     if (city == null)
     {
         return Results.BadRequest();
     }
 
+    //if the city is found, aka not null, the incoming dog object is added to a collection named 'dogs'
     dogs.Add(dog);
 
+    //if successfully added, a 201 result is returned
     return Results.Created($"/api/dogs/{dog.Id}", new DogDTO
     {
         Id = dog.Id,
@@ -131,6 +141,28 @@ app.MapGet("/api/cities", () =>
     {
         Id = c.Id,
         Name = c.Name
+    });
+});
+
+app.MapGet("/api/cities/${id}", (int id) =>
+{
+    City city = cities.FirstOrDefault(c => c.Id == id);
+    if (city == null)
+    {
+        return Results.NotFound();
+    }
+    List<WalkerCity> foundWalkerCities = walkerCities.Where(wc => wc.CityId == id).ToList();
+    List<Walker> foundWalkers = foundWalkerCities.Select(wc => walkers.First(w => w.Id == wc.WalkerId)).ToList();
+
+    return Results.Ok(new CityDTO
+    {
+        Id = city.Id,
+        Name = city.Name,
+        Walkers = foundWalkers.Select(fw => new WalkerDTO
+        {
+            Id = fw.Id,
+            Name = fw.Name
+        }).ToList()
     });
 });
 

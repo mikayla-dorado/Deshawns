@@ -74,35 +74,50 @@ export const AddDog = ({ route }) => {
     const [cities, setCities] = useState([]);
     const [chosenName, setChosenName] = useState("");
     const [chosenCityId, setChosenCityId] = useState(0);
+    const [newDogId, setNewDogId] = useState(null)
 
     const navigate = useNavigate();
+    //gets the current location object
     const location = useLocation();
+    //desructures the 'state' property from the location object
     const { state } = location;
+    //retrieves the length of the dogs array from the location state or sets it to 0 if not available
     const dogsArrLength = state ? state.dogsArrLength : 0;
 
 
+    //fetch cities from the API when the component mounts
+    //updates the 'cities' state with the result
     useEffect(() => {
         getCities().then(citiesArr => setCities(citiesArr))
     }, [])
 
-    const handleSubmit = (e) => {
+
+    useEffect(() => {
+        setNewDogId(dogsArrLength + 1)
+    }, [dogsArrLength])
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const parsedCityId = parseInt(chosenCityId);
 
+        //creates new dog object
         const newDog = {
             name: chosenName,
             cityId: parsedCityId
         }
-
-        if (newDog.name == "" || newDog.cityId == null || newDog.cityId == 0) {
+        if (newDog.name == "" || isNaN(newDog.cityId) || newDog.cityId == 0) {
             window.alert("Please fill out all fields");
         } else {
+            //uses the addDog function t add the dog to the API
+            //then it navigates to the details page for the newly added dog
+            //const newDogId = dogsArrLength + 1;
+                const createdDog = await addDog(newDog)
+                navigate(`/dog-details/${createdDog.id}`)
+            //addDog(newDog).then(() => navigate(`/dog-details/${newDogId}`));
 
-            const newDogId = dogsArrLength + 1;
-            addDog(newDog).then(() => navigate(`/dog-details/${newDogId}`));
-        }
     }
+}
 
     return (
         <div className="newdog-container">
