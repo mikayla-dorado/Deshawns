@@ -18,12 +18,18 @@ export const getCities = async () => {
   return res.json();
 }
 
-export const addDog = (dog) => {
-  return fetch(`/api/dogs`, {
+export const getCityById = async (id) => {
+  const res = await fetch(`/api/cities/${id}`)
+  return res.json();
+}
+
+export const addDog = async (dog) => {
+   const res = await fetch(`/api/dogs`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(dog)
   })
+  return res.json();
 }
