@@ -21,7 +21,7 @@ export const DogDetails = () => {
             <h3>Dog Details</h3>
             <div className="dog-info">
                 <div className="dog-name">
-                    Name: {dog?.name}
+                    <b>Name: </b>{dog?.name}
                 </div>
                 {(dog.walkerId == null) ? (
                     <div className="dog-walker"><b>No Walker Assigned</b></div>

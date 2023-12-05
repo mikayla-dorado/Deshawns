@@ -5,6 +5,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getDogs } from "../apiManager"
 import "./Dogs.css"
+import { AddDog } from "./AddDog"
 
 
 export const Dogs = () => {
@@ -32,8 +33,8 @@ export const Dogs = () => {
             {dogs.map(dog => {
                 const dogId = dog.id
                 return (
-                    <div className="dog-list">
-                        <div className="dogs" key={dog.id}>
+                    <div className="dog-list" key={dog.id}>
+                        <div className="dogs" >
                             <div className="details-btn" onClick={() => { navigate(`dog-details/${dog.id}`) }}>
                                 {dog?.name}
                             </div>
