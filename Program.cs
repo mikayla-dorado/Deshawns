@@ -66,7 +66,7 @@ app.MapGet("/api/hello", () =>
 
 app.MapGet("/api/dogs", () =>
 {
-    return dogs.Select( d => new DogDTO
+    return dogs.Select(d => new DogDTO
     {
         Id = d.Id,
         Name = d.Name
@@ -103,9 +103,31 @@ app.MapGet("/api/dogs/{id}", (int id) =>
 });
 
 
-app.MapGet("/api/cities", () => 
+
+app.MapPost("/api/dogs", (Dog dog) =>
 {
-     return cities.Select( c => new CityDTO
+    dog.Id = dogs.Max(d => d.Id) + 1;
+    City city = cities.FirstOrDefault(c => c.Id == dog.CityId);
+
+    if (city == null)
+    {
+        return Results.BadRequest();
+    }
+
+    dogs.Add(dog);
+
+    return Results.Created($"/api/dogs/{dog.Id}", new DogDTO
+    {
+        Id = dog.Id,
+        Name = dog.Name,
+        CityId = dog.CityId
+    });
+});
+
+
+app.MapGet("/api/cities", () =>
+{
+    return cities.Select(c => new CityDTO
     {
         Id = c.Id,
         Name = c.Name
