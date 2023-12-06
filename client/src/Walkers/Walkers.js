@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { getCities, getCityById, getWalkers } from "../apiManager";
 import "./Walkers.css"
+import { useNavigate } from "react-router-dom";
 
 
 export const Walkers = () => {
@@ -9,6 +10,8 @@ export const Walkers = () => {
     const [filteredWalkers, setFilteredWalkers] = useState([]);
     const [cities, setCities] = useState([]);
     const [chosenCityId, setChosenCityId] = useState(0);
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -74,6 +77,10 @@ export const Walkers = () => {
                             <div className="walker-name">
                                 {walker.name}
                             </div>
+                            <button
+                                className="walker-add-dog-btn"
+                                onClick={() => { navigate(`/assignwalkers`, { state: { walkerId } }) }}
+                            >Add Dog</button>
                         </div>
                     )
                 })}

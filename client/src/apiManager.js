@@ -44,3 +44,14 @@ export const addDog = async (dog) => {
   })
   return res.json();
 }
+
+export const addWalkerToDog = async (id, dogObj) => {
+  const res = await fetch(`/api/dogs/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dogObj)
+  })
+  return res.json();
+}
