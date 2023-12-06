@@ -9,7 +9,8 @@ List<Dog> dogs = new List<Dog>
     new Dog { Id = 2, Name = "Mabel", WalkerId = 3, CityId = 1},
     new Dog { Id = 3, Name = "Charlie", WalkerId = 3, CityId = 2},
     new Dog { Id = 4, Name = "Samson", WalkerId = 1, CityId = 4},
-    new Dog { Id = 5, Name = "Scout", WalkerId = 2, CityId = 5}
+    new Dog { Id = 5, Name = "Scout", CityId = 1},
+    new Dog { Id = 6, Name = "Benny", CityId = 2}
 };
 
 
@@ -210,5 +211,41 @@ app.MapGet("/api/walkers/{id}", (int id) =>
         }).ToList()
     });
 });
+
+
+//this handles a PUT request to update info about a dog
+//takes a integer id and a Dog object as the request body
+app.MapPut("/api/dogs/{id}", (int id, Dog dog) =>
+{
+    //finds the first dog in the 'dogs' collection that has the specified ID
+    //the result is stored in the variable 'dogUpdate'
+    Dog dogUpdate = dogs.FirstOrDefault(d => d.Id == id);
+
+//checks if dog was not found
+    if (dogUpdate == null)
+    {
+        //if not found, returns 404 error
+        return Results.NotFound();
+    }
+    //checks if provided ID in the request body(dog.Id) 
+    //matches the ID in the route parameter(id)
+    if (id != dog.Id)
+    {
+        //if there is a mismatch, a 400 error is returned
+        return Results.BadRequest();
+    }
+
+//updated the properties of the found dog with the data from the request body(dog)
+    dogUpdate.Name = dog.Name;
+    dogUpdate.WalkerId = dog.WalkerId;
+    dogUpdate.CityId = dog.CityId;
+
+//returns a 204 No Content response to indicate a successful update with no additional content
+    return Results.NoContent();
+});
+
+
+
+
 
 app.Run();
