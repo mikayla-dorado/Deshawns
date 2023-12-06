@@ -115,7 +115,7 @@ app.MapPost("/api/dogs", (Dog dog) =>
     //this finds a city in the collection of cities,
     //where the city's Id matches the cityId property of the incoming dog
     City city = cities.FirstOrDefault(c => c.Id == dog.CityId);
-    
+
     //if the city variable is null, it will return a bad request result
     if (city == null)
     {
@@ -144,20 +144,27 @@ app.MapGet("/api/cities", () =>
     });
 });
 
-app.MapGet("/api/cities/${id}", (int id) =>
+app.MapGet("/api/cities/{id}", (int id) =>
 {
+    //finds the city in the 'cities' collection with the specified ID
     City city = cities.FirstOrDefault(c => c.Id == id);
+    //if the city is not found
     if (city == null)
     {
+        //return 404 error
         return Results.NotFound();
     }
+    //find all WalkerCity instances related to the found city
     List<WalkerCity> foundWalkerCities = walkerCities.Where(wc => wc.CityId == id).ToList();
+    //for each walkerCity, find the corresponding Walker in the 'walkers' collection
     List<Walker> foundWalkers = foundWalkerCities.Select(wc => walkers.First(w => w.Id == wc.WalkerId)).ToList();
 
+//set properties of the CityDTO based on the found city
     return Results.Ok(new CityDTO
     {
         Id = city.Id,
         Name = city.Name,
+        //for each found Walker,create a WalkerDTO and add it to the Walkers list
         Walkers = foundWalkers.Select(fw => new WalkerDTO
         {
             Id = fw.Id,
@@ -166,6 +173,42 @@ app.MapGet("/api/cities/${id}", (int id) =>
     });
 });
 
+app.MapGet("/api/walkers", () =>
+{
+    return walkers.Select(w => new WalkerDTO
+    {
+        Id = w.Id,
+        Name = w.Name
+    });
+});
 
+app.MapGet("/api/walkers/{id}", (int id) =>
+{
+    //find the walker in the 'walkers' collection with the specified ID
+    Walker walker = walkers.FirstOrDefault(w => w.Id == id);
+    //checks if walker is not found
+    if (walker == null)
+    {
+        //returns a 404 error
+        return Results.NotFound();
+    }
+    //find all WalkerCity instances related to the found walker
+    List<WalkerCity> foundWalkerCities = walkerCities.Where(wc => wc.WalkerId == id).ToList();
+    //for each WalkerCity, find the corresponding city in the 'cities' collection
+    List<City> foundCities = foundWalkerCities.Select(wc => cities.First(c => c.Id == wc.CityId)).ToList();
+
+//set properties of the WalkerDTO based on the found walker
+    return Results.Ok(new WalkerDTO
+    {
+        Id = walker.Id,
+        Name = walker.Name,
+        //for each found City, create a CityDTO and add it to the Cities list
+        Cities = foundCities.Select(fc => new CityDTO
+        {
+            Id = fc.Id,
+            Name = fc.Name
+        }).ToList()
+    });
+});
 
 app.Run();

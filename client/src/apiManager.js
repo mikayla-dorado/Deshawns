@@ -19,7 +19,18 @@ export const getCities = async () => {
 }
 
 export const getCityById = async (id) => {
-  const res = await fetch(`/api/cities/${id}`)
+  console.log(id)
+  const res = await fetch(`/api/cities/${id}`);
+  return res.json();
+}
+
+export const getWalkers = async () => {
+  const res = await fetch("/api/walkers");
+  return res.json();
+}
+
+export const getWalkersById = async (id) => {
+  const res = await fetch(`/api/walkers/${id}`)
   return res.json();
 }
 
