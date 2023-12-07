@@ -12,8 +12,9 @@ export const AssignWalkers = () => {
     const walkerId = location.state?.walkerId;
     const navigate = useNavigate();
 
+    console.log(dogs)
 
-    // //fetches the list of dogs
+    //fetches the list of dogs
     useEffect(() => {
         getDogs().then(array => {
             setDogs(array)
@@ -21,15 +22,12 @@ export const AssignWalkers = () => {
         });
     }, [])
 
-    console.log(dogs)
-    console.log(availableDogs)
-    
 
     //fetches info about the current walker based on the provided walkerId
     useEffect(() => {
         getWalkersById(walkerId).then(obj => {
             setCurrentWalker(obj)
-            console.log(walkerId)
+            //console.log(walkerId)
         })
     }, [walkerId])
 
@@ -37,10 +35,12 @@ export const AssignWalkers = () => {
     //filters available dogs that arenot walked by the current walker
     //and are in the same cities
     useEffect(() => {
-        const dogsNotWalkedByWalker = dogs.filter(dog => dog.walkerId === null || dog.walkerId === undefined);
+        const dogsNotWalkedByWalker = dogs.filter(dog => dog.walkerId === null);
+        console.log("dogsNotWalkedByWalker", dogsNotWalkedByWalker)
         if (currentWalker.cities) {
             const citiesArray = currentWalker.cities.map(city => city.id);
             //filter dogs based on whether they are in the same cities as the walker
+
             const dogsArray = dogsNotWalkedByWalker.filter(dog =>
                 citiesArray.includes(dog.cityId));
             //update the state variable with the available dogs

@@ -15,8 +15,8 @@ export const Dogs = () => {
     const navigate = useNavigate();
 
 
-        //this fetches the list of dogs from the API
-        //the fetched dogs are thens stored in the 'dogs' state
+    //this fetches the list of dogs from the API
+    //the fetched dogs are thens stored in the 'dogs' state
     useEffect(() => {
         getDogs().then(dogsArr => {
             setDogs(dogsArr)
@@ -33,11 +33,6 @@ export const Dogs = () => {
 
     return (
         <div className="dog-list-container">
-            <button className="add-btn"
-            //when clicked, the btn navigates to 'adddog' route
-            //and passes the current length of the 'dogs' array as state
-                onClick={() => { navigate(`adddog`, { state: { dogsArray } }) }}
-            >Add New Dog</button>
             {dogs.map(dog => {
                 const dogId = dog.id
                 return (
@@ -52,6 +47,11 @@ export const Dogs = () => {
                     </div>
                 )
             })}
+            <button className="add-btn"
+                //when clicked, the btn navigates to 'adddog' route
+                //and passes the current length of the 'dogs' array as state
+                onClick={() => { navigate(`adddog`, { state: { dogsArray } }) }}
+            >Add New Dog</button>
         </div >
     )
 }
