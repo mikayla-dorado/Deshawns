@@ -1,0 +1,15 @@
+.city-list {
+    margin-top: 5%;
+    margin-bottom: 2%;
+}
+
+.cities-container {
+    
+}
+
+.add-city {
+    border:solid black;
+    border-radius: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
