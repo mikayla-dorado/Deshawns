@@ -66,3 +66,14 @@ export const addCity = async (city) => {
   })
   return res.json();
 }
+
+export const editWalker = async (id, walkerObj) => {
+ const res = await fetch(`/api/walker/${id}`, {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(walkerObj)
+ })
+ return res.json();
+}

@@ -163,7 +163,7 @@ app.MapGet("/api/cities/{id}", (int id) =>
     //for each walkerCity, find the corresponding Walker in the 'walkers' collection
     List<Walker> foundWalkers = foundWalkerCities.Select(wc => walkers.First(w => w.Id == wc.WalkerId)).ToList();
 
-//set properties of the CityDTO based on the found city
+    //set properties of the CityDTO based on the found city
     return Results.Ok(new CityDTO
     {
         Id = city.Id,
@@ -201,7 +201,7 @@ app.MapGet("/api/walkers/{id}", (int id) =>
     //for each WalkerCity, find the corresponding city in the 'cities' collection
     List<City> foundCities = foundWalkerCities.Select(wc => cities.First(c => c.Id == wc.CityId)).ToList();
 
-//set properties of the WalkerDTO based on the found walker
+    //set properties of the WalkerDTO based on the found walker
     return Results.Ok(new WalkerDTO
     {
         Id = walker.Id,
@@ -224,7 +224,7 @@ app.MapPut("/api/dogs/{id}", (int id, Dog dog) =>
     //the result is stored in the variable 'dogUpdate'
     Dog dogUpdate = dogs.FirstOrDefault(d => d.Id == id);
 
-//checks if dog was not found
+    //checks if dog was not found
     if (dogUpdate == null)
     {
         //if not found, returns 404 error
@@ -238,17 +238,17 @@ app.MapPut("/api/dogs/{id}", (int id, Dog dog) =>
         return Results.BadRequest();
     }
 
-//updated the properties of the found dog with the data from the request body(dog)
+    //updated the properties of the found dog with the data from the request body(dog)
     dogUpdate.Name = dog.Name;
     dogUpdate.WalkerId = dog.WalkerId;
     dogUpdate.CityId = dog.CityId;
 
-//returns a 204 No Content response to indicate a successful update with no additional content
+    //returns a 204 No Content response to indicate a successful update with no additional content
     return Results.NoContent();
 });
 
 
-app.MapPost("/api/cities", (City city) => 
+app.MapPost("/api/cities", (City city) =>
 {
     city.Id = cities.Max(c => c.Id) + 1;
     cities.Add(city);
@@ -259,6 +259,38 @@ app.MapPost("/api/cities", (City city) =>
         Name = city.Name
     });
 });
+
+
+app.MapPut("/api/walkers/{id}", (int id, Walker walker) =>
+{
+    walkerCities = walkerCities.Where(wc => wc.WalkerId != walker.Id).ToList();
+
+    foreach (City city in walker.Cities)
+    {
+        WalkerCity newWC = new WalkerCity
+        {
+            WalkerId = walker.Id,
+            CityId = city.Id
+        };
+        newWC.Id = walkerCities.Count > 0 ? walkerCities.Max(wc => wc.Id) + 1 : 1;
+        walkerCities.Add(newWC);
+    }
+
+    Walker walkerUpdate = walkers.FirstOrDefault(w => w.Id == id);
+    if (walkerUpdate == null)
+    {
+        return Results.NotFound();
+    }
+    if (id != walker.Id)
+    {
+        return Results.BadRequest();
+    }
+
+    walkerUpdate.Name = walker.Name;
+
+    return Results.NoContent();
+});
+
 
 
 app.Run();
