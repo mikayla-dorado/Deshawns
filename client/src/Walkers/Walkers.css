@@ -1,3 +1,24 @@
 .filter-cities {
     font-weight: bold;
+    margin-bottom: 3%;
 }
+
+.walker-name {
+    font-weight: bold;
+    margin-bottom: 1%;
+    margin-top: 1%;
+}
+
+.walker-add-dog-btn {
+    background-color: rgb(85, 120, 224);
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.filter-walkers {
+    border: solid black;
+    border-radius: 5%;
+}
+

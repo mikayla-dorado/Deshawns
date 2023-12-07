@@ -1,17 +1,45 @@
-.dog-list-container{
+.dog-list-container {
     border: solid black;
+    border-radius: 5%;
 }
 
 .details-btn {
     text-decoration: underline;
+    margin-top: 1%;
 }
 
-.add-dog-city{
+.add-dog-city {
     margin-left: 5%;
     margin-bottom: 5%;
 }
 
-.add-dog-input{
+.add-dog-input {
     margin-left: 5%;
     margin-bottom: 5%;
 }
+
+.add-btn {
+    background-color: rgb(85, 120, 224);
+    margin-top: 2%;
+    margin-bottom: 2%;
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.dog-info {
+    border: solid black;
+    border-radius: 5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+.dog-name {
+    margin-bottom: 1%;
+}
+
+.dog-walker {
+    margin-bottom: 1%;
+}
+

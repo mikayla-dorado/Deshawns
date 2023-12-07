@@ -9,8 +9,9 @@ List<Dog> dogs = new List<Dog>
     new Dog { Id = 2, Name = "Mabel", WalkerId = 3, CityId = 1},
     new Dog { Id = 3, Name = "Charlie", WalkerId = 3, CityId = 2},
     new Dog { Id = 4, Name = "Samson", WalkerId = 1, CityId = 4},
-    new Dog { Id = 5, Name = "Scout", CityId = 1},
-    new Dog { Id = 6, Name = "Benny", CityId = 2}
+    new Dog { Id = 5, Name = "Scout", WalkerId = null, CityId = 1},
+    new Dog { Id = 6, Name = "Benny", WalkerId = null, CityId = 2},
+    new Dog { Id = 7, Name = "Sadie", WalkerId = null, CityId = 5}
 };
 
 
@@ -71,7 +72,9 @@ app.MapGet("/api/dogs", () =>
     return dogs.Select(d => new DogDTO
     {
         Id = d.Id,
-        Name = d.Name
+        Name = d.Name,
+        WalkerId = d.WalkerId,
+        CityId = d.CityId
     });
 });
 
