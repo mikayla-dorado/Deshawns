@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useState } from "react"
 import { getCities, getCityById, getWalkers } from "../apiManager";
 import "./Walkers.css"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export const Walkers = () => {
@@ -75,7 +75,7 @@ export const Walkers = () => {
                     return (
                         <div key={walker.id}>
                             <div className="walker-name">
-                                {walker.name}
+                                <Link to={`/editwalker/${walkerId}`}>{walker.name}</Link>
                             </div>
                             <button
                                 className="walker-add-dog-btn"
