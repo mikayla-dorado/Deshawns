@@ -67,13 +67,24 @@ export const addCity = async (city) => {
   return res.json();
 }
 
-export const editWalker = async (id, walkerObj) => {
- const res = await fetch(`/api/walker/${id}`, {
-  method: "PUT",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(walkerObj)
- })
- return res.json();
+// export const editWalker = async (id, walkerObj) => {
+//  const res = await fetch(`/api/walker/${id}`, {
+//   method: "PUT",
+//   headers: {
+//     "Content-Type": "application/json"
+//   },
+//   body: JSON.stringify(walkerObj)
+//  })
+//  return res.json();
+// }
+
+//?for some reason the asynchronous way didn't work??? but this did
+export const editWalker = (id, walkerObj) => {
+  return fetch(`/api/walkers/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(walkerObj)
+  })
 }

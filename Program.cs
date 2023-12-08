@@ -263,19 +263,29 @@ app.MapPost("/api/cities", (City city) =>
 
 app.MapPut("/api/walkers/{id}", (int id, Walker walker) =>
 {
+    //filters out all entires in the 'walkerCities' collection where the 'walkerId' is not equal to 'walker.Id'
+    //this effectively removes all existing city associateions for the walker being updated
     walkerCities = walkerCities.Where(wc => wc.WalkerId != walker.Id).ToList();
 
+//this loop iterates over the 'Cities' property of the incoming 'walker' object
     foreach (City city in walker.Cities)
     {
+        //for each city in the walker's updated list, it creates a new 'WalkerCity' object
+        //with the 'WalkerId' set to the 'walker.Id' and the 'City.Id' set to the 'city.Id'
         WalkerCity newWC = new WalkerCity
         {
             WalkerId = walker.Id,
             CityId = city.Id
         };
+        //assigns a unique identifier ('Id') to the new 'WalkerCity' object
+        //if there are existing entries in 'walkerCities', it calculates the next available identifier
+        //otherwise it sets the identifier to 1
         newWC.Id = walkerCities.Count > 0 ? walkerCities.Max(wc => wc.Id) + 1 : 1;
+        //adds the new 'WalkerCity' object to the 'walkerCities' collection
         walkerCities.Add(newWC);
     }
 
+//retrieves the walker from the 'walkers' collection based on provided 'id'
     Walker walkerUpdate = walkers.FirstOrDefault(w => w.Id == id);
     if (walkerUpdate == null)
     {
@@ -291,6 +301,17 @@ app.MapPut("/api/walkers/{id}", (int id, Walker walker) =>
     return Results.NoContent();
 });
 
+app.MapDelete("/api/dogs/{id}", (int id) => 
+{
+    Dog dogDelete = dogs.FirstOrDefault(d => d.Id == id);
+    if (dogDelete == null)
+    {
+        return Results.NotFound();
+    }
+    dogs.Remove(dogDelete);
+
+    return Results.NoContent();
+});
 
 
 app.Run();
