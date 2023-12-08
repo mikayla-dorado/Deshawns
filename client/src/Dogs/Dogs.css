@@ -6,6 +6,7 @@
 .details-btn {
     text-decoration: underline;
     margin-top: 1%;
+    font-weight: bold;
 }
 
 .add-dog-city {
@@ -43,3 +44,6 @@
     margin-bottom: 1%;
 }
 
+.delete-dog-btn {
+    background-color: rgb(85, 120, 224);
+}
