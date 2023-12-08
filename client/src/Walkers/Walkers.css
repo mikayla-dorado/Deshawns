@@ -7,6 +7,7 @@
     font-weight: bold;
     margin-bottom: 1%;
     margin-top: 1%;
+    text-decoration: underline;
 }
 
 .walker-add-dog-btn {
@@ -22,3 +23,19 @@
     border-radius: 5%;
 }
 
+.delete-walker-btn {
+    background-color: rgb(85, 120, 224);
+    padding-left: 25px;
+    padding-right: 25px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    margin-top: 2%;
+    margin-bottom: 1%;
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1%;
+  }

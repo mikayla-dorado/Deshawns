@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useState } from "react"
-import { getCities, getCityById, getWalkers } from "../apiManager";
+import { deleteWalker, getCities, getCityById, getWalkers } from "../apiManager";
 import "./Walkers.css"
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 export const Walkers = () => {
@@ -37,6 +37,14 @@ export const Walkers = () => {
         }
     }, [chosenCityId, walkers])
 
+    
+    const handleDelete = (e, walkerId) => {
+        e.preventDefault();
+        deleteWalker(walkerId).then(() => {
+            getWalkers().then(array => setWalkers(array))
+        })
+    }
+
 
     return (
         <div className="walkers-container">
@@ -48,11 +56,6 @@ export const Walkers = () => {
                         id="cities"
                         value={chosenCityId}
                         onChange={e => {
-                            // if (e.target.value === 0) {
-                            //     setChosenCityId(null)
-                            // } else {
-                            //     setChosenCityId(parseInt(e.target.value))
-                            // }
                             setChosenCityId(e.target.value === "0" ? null : parseInt(e.target.value));
                         }}>
                         <option value="0">Choose a City:</option>
@@ -75,12 +78,18 @@ export const Walkers = () => {
                     return (
                         <div key={walker.id}>
                             <div className="walker-name">
-                                <Link to={`/editwalker/${walkerId}`}>{walker.name}</Link>
+                                <div className="walker-name" onClick={() => navigate(`/editwalker/${walkerId}`)}>
+                                    {walker.name}
+                                </div>
                             </div>
+                            <div className="btn-container">
                             <button
                                 className="walker-add-dog-btn"
                                 onClick={() => { navigate(`/assignwalkers`, { state: { walkerId } }) }}
                             >Add Dog</button>
+                            <button className="delete-walker-btn" onClick={(e) => handleDelete(e, walkerId)}> Remove Walker
+                            </button>
+                            </div>
                         </div>
                     )
                 })}

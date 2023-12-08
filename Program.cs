@@ -11,7 +11,8 @@ List<Dog> dogs = new List<Dog>
     new Dog { Id = 4, Name = "Samson", WalkerId = 1, CityId = 4},
     new Dog { Id = 5, Name = "Scout", WalkerId = null, CityId = 1},
     new Dog { Id = 6, Name = "Benny", WalkerId = null, CityId = 2},
-    new Dog { Id = 7, Name = "Sadie", WalkerId = null, CityId = 5}
+    new Dog { Id = 7, Name = "Sadie", WalkerId = null, CityId = 5},
+    new Dog { Id = 8, Name = "Rufus", WalkerId = 4, CityId = 4}
 };
 
 
@@ -29,7 +30,8 @@ List<Walker> walkers = new List<Walker>
 {
     new Walker { Id = 1, Name = "Ely"},
     new Walker { Id = 2, Name = "Jaylee"},
-    new Walker { Id = 3, Name = "Reiken"}
+    new Walker { Id = 3, Name = "Reiken"},
+    new Walker { Id = 4, Name = "Hunter"}
 };
 
 
@@ -39,7 +41,8 @@ List<WalkerCity> walkerCities = new List<WalkerCity>
     new WalkerCity { Id = 2,  WalkerId = 2, CityId = 2},
     new WalkerCity { Id = 3, WalkerId = 3, CityId = 3},
     new WalkerCity { Id = 4, WalkerId = 2, CityId = 4},
-    new WalkerCity { Id = 5, WalkerId = 3, CityId = 5}
+    new WalkerCity { Id = 5, WalkerId = 3, CityId = 5},
+    new WalkerCity { Id = 6, WalkerId = 4, CityId = 1}
 };
 
 
@@ -313,5 +316,25 @@ app.MapDelete("/api/dogs/{id}", (int id) =>
     return Results.NoContent();
 });
 
+
+app.MapDelete("/api/walkers/{id}", (int id) =>
+{
+    Walker walkerDelete = walkers.FirstOrDefault(w => w.Id == id);
+    if (walkerDelete == null)
+    {
+        return Results.NotFound();
+    }
+    walkers.Remove(walkerDelete);
+
+//this filters the 'dogs' collection, & selects only those dogs where the 'WalkerId' is equal to the provided 'id'
+//then the filtered dogs are converted into a list
+//for each dog in the filtered list, it sets the 'WalkerId' property to 'null'
+    dogs.Where(dog => dog.WalkerId == id).ToList().ForEach(dog => dog.WalkerId = null);
+
+    return Results.NoContent();
+});
+
+
+//the Walker Delete endpoint dissociates dogs from a walker by nullifying their 'WalkerId' property
 
 app.Run();
